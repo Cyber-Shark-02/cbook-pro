@@ -4,7 +4,7 @@
 
 CBook Pro is a powerful VS Code extension that brings **Python**, **C**, **C++**, **Java**, and **Rich Markdown** together in a single `.cbook` notebook file. Designed for students, researchers, and developers who need a flexible, multi-language playground.
 
-![CBook Pro Banner](https://raw.githubusercontent.com/microsoft/vscode-icons/master/icons/dark/notebook.svg)
+
 
 ## ✨ Features
 
@@ -16,8 +16,16 @@ CBook Pro is a powerful VS Code extension that brings **Python**, **C**, **C++**
 ### ⚡ Polyglot Execution
 Run compiled languages side-by-side with Python!
 *   **C / C++**: Write, compile, and run C/C++ code on the fly (uses `gcc`/`g++`).
-*   **Java**: Execute Java classes instantly (uses `javac`/`java`).
+*   **Java**: 
+    *   Execute Java classes instantly (uses `javac`/`java`).
+    *   **Smart Snippets**: Run simple Java code (e.g., `System.out.println("Hi")`) without needing to write a `public class Main` wrapper!
 *   **Stateless**: Each C/C++/Java cell runs in isolation, perfect for testing algorithms or snippets.
+
+### 🐍 Stateful Python Kernel
+*   **History Awareness**: Variables and functions persist across cells, just like Jupyter.
+*   **Interactive Input**: Support for `input()`! A VS Code input box will appear when your script asks for input.
+*   **Plotting Support**: Seamlessly render **Matplotlib** and **Seaborn** plots directly in the notebook.
+*   **Smart Memory**: Automatically clears execution history when you close the notebook to prevent memory leaks.
 
 ### 📝 Advanced Markdown Tools
 Create beautiful documentation with built-in rich text tools:
@@ -68,11 +76,6 @@ You can customize the compiler paths in VS Code Settings (`Ctrl+,`):
 | `CBook Pro: Toggle Read-Only` | Lock/Unlock the selected code cell. |
 | `CBook Pro: Insert Image` | Insert an image from your local file system. |
 | `CBook Pro: Insert Table` | Insert a 3x3 Markdown table template. |
-
-## 🐛 Known Issues
-
-*   Java cells must contain a `public class [Name]` definition to execute correctly.
-*   Interactive Python (`input()`) is not currently supported.
 
 ---
 
