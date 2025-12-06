@@ -10,7 +10,6 @@ export function toggleFormat(startTag: string, endTag: string) {
     const text = editor.document.getText(selection);
 
     // Smart Toggle Logic
-    // Check if the text is already wrapped with the tags
     if (text.startsWith(startTag) && text.endsWith(endTag)) {
         // Unwrap
         const unwrap = text.substring(startTag.length, text.length - endTag.length);
@@ -18,11 +17,6 @@ export function toggleFormat(startTag: string, endTag: string) {
             editBuilder.replace(selection, unwrap);
         });
     } else {
-        // Check if the selection is inside a larger block that is wrapped? 
-        // That's complex. Let's stick to the requested "make it good" which implies basic toggle works.
-        // But let's also handle the case where the user selects *inside* the tags.
-        // For now, strict wrapping check is a huge improvement over "always wrap".
-
         const replacement = `${startTag}${text}${endTag}`;
         editor.edit(editBuilder => {
             editBuilder.replace(selection, replacement);
@@ -59,17 +53,14 @@ export async function insertImage() {
     if (uris && uris.length > 0) {
         const sourceUri = uris[0];
 
-        // Robustly find the notebook directory
         let currentDir = '';
         if (editor.document.uri.scheme === 'file') {
             currentDir = path.dirname(editor.document.uri.fsPath);
         } else {
-            // If cell is virtual, try to find the notebook from visible editors
             const notebookEditor = vscode.window.visibleNotebookEditors.find(ne => ne.notebook.uri.toString() === editor.document.uri.toString());
             if (notebookEditor) {
                 currentDir = path.dirname(notebookEditor.notebook.uri.fsPath);
             } else {
-                // Fallback to workspace root or error
                 if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
                     currentDir = vscode.workspace.workspaceFolders[0].uri.fsPath;
                 } else {
@@ -88,7 +79,6 @@ export async function insertImage() {
         const fileName = path.basename(sourceUri.fsPath);
         const destPath = path.join(assetsDir, fileName);
 
-        // Copy file
         try {
             fs.copyFileSync(sourceUri.fsPath, destPath);
         } catch (e) {
@@ -97,13 +87,59 @@ export async function insertImage() {
         }
 
         const relativePath = `assets/${fileName}`;
-
-        // Use HTML for resizing support
-        // Default width 500px to be "good" size
         const imageHtml = `<img src="${relativePath}" alt="${fileName}" width="500" />`;
 
         editor.edit(editBuilder => {
             editBuilder.insert(editor.selection.active, imageHtml);
         });
     }
+}
+
+export function toggleList(type: 'bullet' | 'numbered') {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) { return; }
+
+    const selection = editor.selection;
+    const document = editor.document;
+
+    const startLine = selection.start.line;
+    const endLine = selection.end.line;
+
+    let replacement = '';
+
+    for (let i = startLine; i <= endLine; i++) {
+        const lineText = document.lineAt(i).text;
+
+        const isBullet = lineText.trim().startsWith('- ');
+        const isNumbered = /^\s*\d+\.\s/.test(lineText);
+
+        let newLine = lineText;
+
+        if (type === 'bullet') {
+            if (isBullet) {
+                newLine = lineText.replace(/^\s*-\s/, '');
+            } else if (isNumbered) {
+                newLine = lineText.replace(/^\s*\d+\.\s/, '- ');
+            } else {
+                newLine = `- ${lineText}`;
+            }
+        } else {
+            if (isNumbered) {
+                newLine = lineText.replace(/^\s*\d+\.\s/, '');
+            } else if (isBullet) {
+                const num = i - startLine + 1;
+                newLine = lineText.replace(/^\s*-\s/, `${num}. `);
+            } else {
+                const num = i - startLine + 1;
+                newLine = `${num}. ${lineText}`;
+            }
+        }
+
+        replacement += newLine + (i < endLine ? '\n' : '');
+    }
+
+    const range = new vscode.Range(startLine, 0, endLine, document.lineAt(endLine).text.length);
+    editor.edit(editBuilder => {
+        editBuilder.replace(range, replacement);
+    });
 }

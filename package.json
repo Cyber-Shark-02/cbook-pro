@@ -4,6 +4,10 @@
     "description": "Advanced Polyglot Notebook Extension for VS Code",
     "publisher": "cbook-pro",
     "version": "0.0.1",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Cyber-Shark-02/cbook-pro.git"
+    },
     "engines": {
         "vscode": "^1.80.0"
     },
@@ -59,6 +63,16 @@
                 "icon": "$(table)"
             },
             {
+                "command": "cbook.md.bullet",
+                "title": "Bullet List",
+                "icon": "$(list-unordered)"
+            },
+            {
+                "command": "cbook.md.numbered",
+                "title": "Numbered List",
+                "icon": "$(list-ordered)"
+            },
+            {
                 "command": "cbook.md.insertImage",
                 "title": "Insert Image",
                 "icon": "$(file-media)"
@@ -102,6 +116,16 @@
                     "when": "notebookCellType == markup"
                 },
                 {
+                    "command": "cbook.md.bullet",
+                    "group": "inline-group@7",
+                    "when": "notebookCellType == markup"
+                },
+                {
+                    "command": "cbook.md.numbered",
+                    "group": "inline-group@8",
+                    "when": "notebookCellType == markup"
+                },
+                {
                     "command": "cbook.toggleReadOnly",
                     "group": "navigation",
                     "when": "notebookCellType == code"
@@ -142,11 +166,13 @@
             "explorer": [
                 {
                     "id": "cbook.variableExplorer",
-                    "name": "CBook Variables"
+                    "name": "CBook Variables",
+                    "icon": "$(symbol-variable)"
                 },
                 {
                     "id": "cbook.kernelManager",
-                    "name": "CBook Kernel"
+                    "name": "CBook Kernel",
+                    "icon": "$(server)"
                 }
             ]
         }

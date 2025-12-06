@@ -24,6 +24,8 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.commands.registerCommand('cbook.md.colorRed', () => markdownTools.toggleFormat('<span style="color: red;">', '</span>')),
         vscode.commands.registerCommand('cbook.md.insertTable', () => markdownTools.insertTable()),
         vscode.commands.registerCommand('cbook.md.insertImage', () => markdownTools.insertImage()),
+        vscode.commands.registerCommand('cbook.md.bullet', () => markdownTools.toggleList('bullet')),
+        vscode.commands.registerCommand('cbook.md.numbered', () => markdownTools.toggleList('numbered')),
         vscode.commands.registerCommand('cbook.toggleReadOnly', (cell: vscode.NotebookCell) => {
             if (cell) {
                 const isReadOnly = cell.metadata.cbook_readonly;
