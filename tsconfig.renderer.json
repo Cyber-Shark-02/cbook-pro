@@ -1,0 +1,16 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "module": "es2020",
+        "target": "es2020",
+        "outDir": "out",
+        "noEmit": false
+    },
+    "include": [
+        "src/renderer.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        ".vscode-test"
+    ]
+}

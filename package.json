@@ -1,0 +1,212 @@
+{
+    "name": "cbook-pro",
+    "displayName": "CBook Pro",
+    "description": "Advanced Polyglot Notebook Extension for VS Code",
+    "publisher": "CyberShark",
+    "version": "0.0.1",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Cyber-Shark-02/cbook-pro.git"
+    },
+    "engines": {
+        "vscode": "^1.80.0"
+    },
+    "categories": [
+        "Notebooks",
+        "Programming Languages"
+    ],
+    "activationEvents": [
+        "onNotebook:cbook-notebook"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "notebooks": [
+            {
+                "type": "cbook-notebook",
+                "displayName": "CBook Pro",
+                "selector": [
+                    {
+                        "filenamePattern": "*.cbook"
+                    }
+                ],
+                "priority": "default"
+            }
+        ],
+        "notebookRenderer": [
+            {
+                "id": "cbook-renderer",
+                "displayName": "CBook Renderer",
+                "entrypoint": "./out/renderer.mjs",
+                "mimeTypes": [
+                    "application/vnd.cbook.input"
+                ],
+                "requiresMessaging": "optional"
+            }
+        ],
+        "commands": [
+            {
+                "command": "cbook-pro.toggleStateless",
+                "title": "Toggle Stateless Mode",
+                "category": "CBook Pro"
+            },
+            {
+                "command": "cbook.exportToHTML",
+                "title": "Export to HTML",
+                "icon": "$(export)"
+            },
+            {
+                "command": "cbook.md.bold",
+                "title": "Bold",
+                "icon": "$(bold)"
+            },
+            {
+                "command": "cbook.md.italic",
+                "title": "Italic",
+                "icon": "$(italic)"
+            },
+            {
+                "command": "cbook.md.highlight",
+                "title": "Highlight",
+                "icon": "$(paintcan)"
+            },
+            {
+                "command": "cbook.md.colorRed",
+                "title": "Red Text",
+                "icon": "$(symbol-color)"
+            },
+            {
+                "command": "cbook.md.insertTable",
+                "title": "Insert Table",
+                "icon": "$(table)"
+            },
+            {
+                "command": "cbook.md.bullet",
+                "title": "Bullet List",
+                "icon": "$(list-unordered)"
+            },
+            {
+                "command": "cbook.md.numbered",
+                "title": "Numbered List",
+                "icon": "$(list-ordered)"
+            },
+            {
+                "command": "cbook.md.insertImage",
+                "title": "Insert Image",
+                "icon": "$(file-media)"
+            },
+            {
+                "command": "cbook.toggleReadOnly",
+                "title": "Toggle Read-Only",
+                "icon": "$(lock)"
+            }
+        ],
+        "menus": {
+            "notebook/cell/title": [
+                {
+                    "command": "cbook.md.bold",
+                    "group": "inline-group@1",
+                    "when": "notebookCellType == markup"
+                },
+                {
+                    "command": "cbook.md.italic",
+                    "group": "inline-group@2",
+                    "when": "notebookCellType == markup"
+                },
+                {
+                    "command": "cbook.md.highlight",
+                    "group": "inline-group@3",
+                    "when": "notebookCellType == markup"
+                },
+                {
+                    "command": "cbook.md.colorRed",
+                    "group": "inline-group@4",
+                    "when": "notebookCellType == markup"
+                },
+                {
+                    "command": "cbook.md.insertTable",
+                    "group": "inline-group@5",
+                    "when": "notebookCellType == markup"
+                },
+                {
+                    "command": "cbook.md.insertImage",
+                    "group": "inline-group@6",
+                    "when": "notebookCellType == markup"
+                },
+                {
+                    "command": "cbook.md.bullet",
+                    "group": "inline-group@7",
+                    "when": "notebookCellType == markup"
+                },
+                {
+                    "command": "cbook.md.numbered",
+                    "group": "inline-group@8",
+                    "when": "notebookCellType == markup"
+                },
+                {
+                    "command": "cbook.toggleReadOnly",
+                    "group": "navigation",
+                    "when": "notebookCellType == code"
+                },
+                {
+                    "command": "cbook-pro.toggleStateless",
+                    "when": "notebookCellType == code",
+                    "group": "navigation"
+                }
+            ]
+        },
+        "configuration": {
+            "title": "CBook Pro",
+            "properties": {
+                "cbook.pythonPath": {
+                    "type": "string",
+                    "default": "python",
+                    "description": "Path to Python executable"
+                },
+                "cbook.gccPath": {
+                    "type": "string",
+                    "default": "gcc",
+                    "description": "Path to GCC executable"
+                },
+                "cbook.gppPath": {
+                    "type": "string",
+                    "default": "g++",
+                    "description": "Path to G++ executable"
+                },
+                "cbook.javacPath": {
+                    "type": "string",
+                    "default": "javac",
+                    "description": "Path to Javac executable"
+                },
+                "cbook.javaPath": {
+                    "type": "string",
+                    "default": "java",
+                    "description": "Path to Java executable"
+                }
+            }
+        },
+        "views": {
+            "explorer": [
+                {
+                    "id": "cbook.variableExplorer",
+                    "name": "CBook Variables",
+                    "icon": "$(symbol-variable)"
+                },
+                {
+                    "id": "cbook.kernelManager",
+                    "name": "CBook Kernel",
+                    "icon": "$(server)"
+                }
+            ]
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./ && node scripts/build-renderer.js",
+        "watch": "tsc -watch -p ./"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.80.0",
+        "@types/node": "^16.11.7",
+        "typescript": "^4.9.4"
+    }
+}
